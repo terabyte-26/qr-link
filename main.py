@@ -55,8 +55,8 @@ def index():
     return render_template("index.html", venues=VENUES)
 
 
-@app.route("/qr")
-def qr():
+def _build_qr_png() -> io.BytesIO:
+    """Generate the branded QR PNG bytes for the current host."""
     target = request.host_url
     code = qrcode.QRCode(
         version=None,
@@ -80,7 +80,18 @@ def qr():
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     buf.seek(0)
-    return send_file(buf, mimetype="image/png", download_name="invite-qr.png")
+    return buf
+
+
+@app.route("/qr.png")
+def qr_png():
+    return send_file(_build_qr_png(), mimetype="image/png", download_name="altarys-qr.png")
+
+
+@app.route("/qr")
+def qr():
+    # HTML page so link previews (WhatsApp, etc.) can read og:image meta tags.
+    return render_template("qr.html")
 
 
 if __name__ == "__main__":

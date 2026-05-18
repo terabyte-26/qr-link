@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f3e6cb">
+  <title>Altarys Group — Scan QR</title>
+
+  <meta name="description" content="Scan this QR code with your phone to access Altarys Group's project presentations.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Altarys Group — Scan to view projects">
+  <meta property="og:description" content="Scan this QR with your phone to access Altarys Group's project presentations.">
+  <meta property="og:url" content="{{ request.url_root }}qr">
+  <meta property="og:image" content="{{ request.url_root }}qr.png">
+  <meta property="og:image:secure_url" content="{{ request.url_root }}qr.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="820">
+  <meta property="og:image:height" content="820">
+  <meta property="og:image:alt" content="Altarys Group QR code">
+  <meta property="og:site_name" content="Altarys Group">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Altarys Group — Scan to view projects">
+  <meta name="twitter:description" content="Scan this QR to view Altarys Group's project presentations.">
+  <meta name="twitter:image" content="{{ request.url_root }}qr.png">
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='altaris_logo.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .qr-card {
+      text-align: center;
+      max-width: 540px;
+      width: 100%;
+    }
+    .qr-image {
+      width: min(86vw, 480px);
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 18px;
+      box-shadow:
+        0 24px 50px rgba(112, 32, 16, 0.22),
+        0 0 0 1px rgba(112, 32, 16, 0.08);
+      opacity: 0;
+      animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .qr-caption {
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #702010;
+      margin-top: 1.5rem;
+      font-weight: 500;
+      opacity: 0;
+      animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 100ms;
+    }
+    .qr-hint {
+      font-size: 0.82rem;
+      color: #8a6e54;
+      margin-top: 0.5rem;
+      opacity: 0;
+      animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 180ms;
+    }
+  </style>
+</head>
+<body>
+  <main class="qr-card">
+    <img class="qr-image" src="{{ url_for('qr_png') }}" alt="Altarys Group QR Code">
+    <p class="qr-caption">Altarys Group</p>
+    <p class="qr-hint">Scan with your phone camera</p>
+  </main>
+</body>
+</html>
