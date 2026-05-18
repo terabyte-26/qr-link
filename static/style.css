@@ -27,14 +27,26 @@ body {
   margin-bottom: 2.5rem;
 }
 
+.brand-logo {
+  display: block;
+  width: clamp(96px, 26vw, 130px);
+  height: auto;
+  margin: 0 auto 1.25rem;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(107, 46, 38, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  opacity: 0;
+  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .title {
-  font-size: clamp(1.6rem, 5vw, 2rem);
+  font-size: clamp(1.5rem, 4.5vw, 1.85rem);
   font-weight: 300;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #ffffff;
   opacity: 0;
   animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 90ms;
 }
 
 .subtitle {
@@ -45,7 +57,7 @@ body {
   font-weight: 400;
   opacity: 0;
   animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: 60ms;
+  animation-delay: 160ms;
 }
 
 .cards {
@@ -129,7 +141,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .title, .subtitle, .card {
+  .brand-logo, .title, .subtitle, .card {
     animation: none;
     opacity: 1;
     transform: none;

@@ -5,11 +5,12 @@ import qrcode
 from qrcode.constants import ERROR_CORRECT_H
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
+from PIL import Image
 from flask import Flask, render_template, request, send_file
 
 app = Flask(__name__)
 
-LOGO_PATH = Path(__file__).parent / "altaris_logo.png"
+LOGO_PATH = Path(__file__).parent / "static" / "altaris_logo.png"
 
 VENUES = sorted([
     ("5TH AVENUE",         "https://drive.google.com/drive/folders/1BJ8QZPu-u0tpV2ArlWAOqyAdgn-MGFOH?usp=sharing"),
@@ -22,6 +23,15 @@ VENUES = sorted([
     ("M ROAD PARK",        "https://drive.google.com/drive/folders/1SyVNcCwyMfMaWXJWD8FBomggVuwiNtbZ?usp=sharing"),
     ("TRIANGLE",           "https://drive.google.com/drive/folders/1GxFAEsGijb3Aa_shUiGpWAOWqvuVHpvV?usp=sharing"),
 ])
+
+
+def _logo_with_padding() -> Image.Image:
+    """Load the logo and pad it with transparency so the embedded version appears smaller."""
+    logo = Image.open(LOGO_PATH).convert("RGBA")
+    pad = int(max(logo.size) * 1.0)  # 100% padding each side → visible logo ~1/3 of canvas
+    canvas = Image.new("RGBA", (logo.width + 2 * pad, logo.height + 2 * pad), (0, 0, 0, 0))
+    canvas.paste(logo, (pad, pad), logo)
+    return canvas
 
 
 @app.route("/")
@@ -45,7 +55,7 @@ def qr():
         "module_drawer": RoundedModuleDrawer(),
     }
     if LOGO_PATH.exists():
-        kwargs["embeded_image_path"] = str(LOGO_PATH)
+        kwargs["embeded_image"] = _logo_with_padding()
     img = code.make_image(**kwargs)
     buf = io.BytesIO()
     img.save(buf, format="PNG")

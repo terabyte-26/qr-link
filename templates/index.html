@@ -4,12 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0a0a0a">
-  <title>Our Projects</title>
+  <title>Altarys Group — Our Projects</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='altaris_logo.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <main class="container">
     <header class="page-header">
+      <img class="brand-logo"
+           src="{{ url_for('static', filename='altaris_logo.png') }}"
+           alt="Altarys Group">
       <h1 class="title">Our Projects</h1>
       <p class="subtitle">Select a project to view its full presentation</p>
     </header>
@@ -17,7 +21,7 @@
     <nav class="cards" aria-label="Projects">
       {% for name, url in venues %}
         <a class="card" href="{{ url }}" target="_blank" rel="noopener noreferrer"
-           style="animation-delay: {{ 120 + loop.index0 * 70 }}ms">
+           style="animation-delay: {{ 240 + loop.index0 * 70 }}ms">
           <span class="card-name">{{ name }}</span>
           <span class="card-arrow" aria-hidden="true">›</span>
         </a>
