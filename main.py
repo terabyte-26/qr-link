@@ -4,6 +4,7 @@ from pathlib import Path
 import qrcode
 from qrcode.constants import ERROR_CORRECT_H
 from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.colormasks import SolidFillColorMask
 from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
 from PIL import Image, ImageDraw
 from flask import Flask, render_template, request, send_file
@@ -11,6 +12,10 @@ from flask import Flask, render_template, request, send_file
 app = Flask(__name__)
 
 LOGO_PATH = Path(__file__).parent / "static" / "altaris_logo.png"
+
+# Brand colors extracted from the Altarys logo
+BRAND_BURGUNDY = (112, 32, 16)   # #702010 — dark wine, used for QR modules
+BRAND_CREAM = (240, 224, 192)    # #f0e0c0 — warm cream, used for QR background
 
 VENUES = sorted([
     ("5TH AVENUE",         "https://drive.google.com/drive/folders/1BJ8QZPu-u0tpV2ArlWAOqyAdgn-MGFOH?usp=sharing"),
@@ -61,6 +66,10 @@ def qr():
     kwargs = {
         "image_factory": StyledPilImage,
         "module_drawer": RoundedModuleDrawer(),
+        "color_mask": SolidFillColorMask(
+            back_color=BRAND_CREAM,
+            front_color=BRAND_BURGUNDY,
+        ),
     }
     if LOGO_PATH.exists():
         kwargs["embeded_image"] = _logo_with_padding()
