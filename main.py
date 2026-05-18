@@ -5,7 +5,7 @@ import qrcode
 from qrcode.constants import ERROR_CORRECT_H
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
-from PIL import Image
+from PIL import Image, ImageDraw
 from flask import Flask, render_template, request, send_file
 
 app = Flask(__name__)
@@ -26,9 +26,17 @@ VENUES = sorted([
 
 
 def _logo_with_padding() -> Image.Image:
-    """Load the logo and pad it with transparency so the embedded version appears smaller."""
+    """Load logo, round its corners, then pad with transparency for a smaller QR embed."""
     logo = Image.open(LOGO_PATH).convert("RGBA")
-    pad = int(max(logo.size) * 0.35)  # padding each side → visible logo is a moderate ~15% of QR
+    # Round the corners by masking the alpha channel
+    radius = int(min(logo.size) * 0.14)
+    mask = Image.new("L", logo.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle(
+        (0, 0, logo.size[0], logo.size[1]), radius=radius, fill=255
+    )
+    logo.putalpha(mask)
+    # Pad with transparency so the embedded version appears smaller
+    pad = int(max(logo.size) * 0.35)
     canvas = Image.new("RGBA", (logo.width + 2 * pad, logo.height + 2 * pad), (0, 0, 0, 0))
     canvas.paste(logo, (pad, pad), logo)
     return canvas
