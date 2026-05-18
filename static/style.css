@@ -93,11 +93,12 @@ body {
   transform: translateY(8px);
   animation: fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transition:
-    border-color 220ms ease,
-    background 260ms ease,
-    color 260ms ease,
-    transform 220ms ease,
-    box-shadow 220ms ease;
+    background 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, background, color;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -128,7 +129,9 @@ body {
   line-height: 1;
   color: #b07a5a;
   font-weight: 300;
-  transition: transform 220ms ease, color 220ms ease;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .card:hover .card-arrow {
