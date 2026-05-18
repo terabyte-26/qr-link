@@ -28,7 +28,7 @@ VENUES = sorted([
 def _logo_with_padding() -> Image.Image:
     """Load the logo and pad it with transparency so the embedded version appears smaller."""
     logo = Image.open(LOGO_PATH).convert("RGBA")
-    pad = int(max(logo.size) * 1.0)  # 100% padding each side → visible logo ~1/3 of canvas
+    pad = int(max(logo.size) * 0.35)  # padding each side → visible logo is a moderate ~15% of QR
     canvas = Image.new("RGBA", (logo.width + 2 * pad, logo.height + 2 * pad), (0, 0, 0, 0))
     canvas.paste(logo, (pad, pad), logo)
     return canvas
