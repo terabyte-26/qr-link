@@ -1,28 +1,25 @@
 import io
-import os
+import json
+from pathlib import Path
 
 import qrcode
 from flask import Flask, render_template, request, send_file
 
 app = Flask(__name__)
 
-IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".webp")
-IMAGES_DIR = os.path.join(app.static_folder, "images")
+MANIFEST_PATH = Path(__file__).parent / "manifest.json"
 
 
-def list_images():
-    if not os.path.isdir(IMAGES_DIR):
-        return []
-    files = [
-        f for f in os.listdir(IMAGES_DIR)
-        if f.lower().endswith(IMAGE_EXTENSIONS)
-    ]
-    return sorted(files)
+def load_manifest():
+    if not MANIFEST_PATH.exists():
+        return {"venues": []}
+    return json.loads(MANIFEST_PATH.read_text())
 
 
 @app.route("/")
 def index():
-    return render_template("index.html", images=list_images())
+    manifest = load_manifest()
+    return render_template("index.html", venues=manifest["venues"])
 
 
 @app.route("/qr")

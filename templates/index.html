@@ -7,14 +7,30 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  {% if images %}
-    <main class="gallery">
-      {% for image in images %}
-        <img src="{{ url_for('static', filename='images/' + image) }}" alt="" loading="lazy">
-      {% endfor %}
-    </main>
+  {% if venues %}
+    {% for venue in venues %}
+      <section class="venue">
+        <h2 class="venue-title">{{ venue.name }}</h2>
+        <div class="media-list">
+          {% for item in venue.media %}
+            {% if item.type == "image" %}
+              <img src="{{ item.url }}" alt="" loading="lazy">
+            {% elif item.type == "video" %}
+              <video controls muted playsinline preload="metadata">
+                <source src="{{ item.url }}" type="video/mp4">
+              </video>
+            {% elif item.type == "raw" %}
+              <a class="pdf-card" href="{{ item.url }}" target="_blank" rel="noopener">
+                <span class="pdf-icon">PDF</span>
+                <span class="pdf-name">{{ item.filename }}</span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
   {% else %}
-    <div class="empty">No images yet.</div>
+    <div class="empty">No content yet.</div>
   {% endif %}
 </body>
 </html>
