@@ -1,9 +1,15 @@
 import io
+from pathlib import Path
 
 import qrcode
+from qrcode.constants import ERROR_CORRECT_H
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
 from flask import Flask, render_template, request, send_file
 
 app = Flask(__name__)
+
+LOGO_PATH = Path(__file__).parent / "altaris_logo.png"
 
 VENUES = sorted([
     ("5TH AVENUE",         "https://drive.google.com/drive/folders/1BJ8QZPu-u0tpV2ArlWAOqyAdgn-MGFOH?usp=sharing"),
@@ -26,7 +32,21 @@ def index():
 @app.route("/qr")
 def qr():
     target = request.host_url
-    img = qrcode.make(target)
+    code = qrcode.QRCode(
+        version=None,
+        error_correction=ERROR_CORRECT_H,
+        box_size=20,
+        border=2,
+    )
+    code.add_data(target)
+    code.make(fit=True)
+    kwargs = {
+        "image_factory": StyledPilImage,
+        "module_drawer": RoundedModuleDrawer(),
+    }
+    if LOGO_PATH.exists():
+        kwargs["embeded_image_path"] = str(LOGO_PATH)
+    img = code.make_image(**kwargs)
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     buf.seek(0)
