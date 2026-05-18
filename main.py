@@ -8,8 +8,11 @@ from qrcode.image.styles.colormasks import SolidFillColorMask
 from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
 from PIL import Image, ImageDraw
 from flask import Flask, render_template, request, send_file
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
+# Respect X-Forwarded-Proto/Host from Vercel so request.url_root is the public HTTPS URL
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 LOGO_PATH = Path(__file__).parent / "static" / "altaris_logo.png"
 
